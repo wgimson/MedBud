@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { UserFormPage } from '../user-form/user-form';
 
 @Component({
   selector: 'page-list',
@@ -32,6 +33,6 @@ export class ListPage {
     // That's right, we're pushing to ourselves!
     this.navCtrl.push(ListPage, {
       item: item
-    });
+    })
   }
 }
