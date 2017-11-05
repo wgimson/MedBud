@@ -31,7 +31,6 @@ export class UserDisplayPage {
     this.econtact = this.navParams.get("econtact");
     this.mconditions = this.navParams.get("mconditions");
     this.prescriptions = this.navParams.get("prescriptions");
-    debugger;
   }
 
   ionViewDidLoad() {
