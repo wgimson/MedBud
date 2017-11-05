@@ -15,6 +15,20 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+// Import the AF2 Module
+import { AngularFireModule } from 'angularfire2';
+
+// AF2 Settings
+export const firebaseConfig = {
+  apiKey: "AIzaSyDk_lNkfHuzk66qkUpio_zjDf_hhigu2Rw",
+  authDomain: "medbud-c6b5b.firebaseapp.com",
+  databaseURL: "https://medbud-c6b5b.firebaseio.com",
+  projectId: "medbud-c6b5b",
+  storageBucket: "medbud-c6b5b.appspot.com",
+  messagingSenderId: "1067946597419"
+};
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -28,6 +42,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(firebaseConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
