@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 
+import { UserDisplayPage } from '../user-display/user-display';
+
 /**
  * Generated class for the UserFormPage page.
  *
@@ -32,6 +34,12 @@ export class UserFormPage {
     console.log(this.todo.value);
     console.log('The patients name is ' + this.todo.value.fname + ' ' + this.todo.value.lname +
                 ' andhe /she suffers from ' + this.todo.value.mconditions);
+    this.goToDisplayPage();
+  }
+
+  goToDisplayPage() {
+    let data = this.todo.value;
+    this.navCtrl.push(UserDisplayPage, data);
   }
 
   ionViewDidLoad() {
