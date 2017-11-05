@@ -15,7 +15,7 @@
 
 
 <ion-content padding>
-  <form [formGroup]="todo" (ngSubmit)="logForm()">
+  <form [formGroup]="user" (ngSubmit)="logForm()">
     <ion-item>
       <ion-label>First Name</ion-label>
       <ion-input type="text" formControlName="fname"></ion-input>
@@ -44,6 +44,6 @@
       <ion-label>Prescriptions</ion-label>
       <ion-textarea formControlName="prescriptions"></ion-textarea>
     </ion-item>
-    <button ion-button type="submit" [disabled]="!todo.valid">Submit</button>
+    <button ion-button type="submit" [disabled]="!user.valid">Submit</button>
   </form>
 </ion-content>
