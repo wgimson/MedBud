@@ -1,14 +1,25 @@
-import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { Http } from "@angular/http";
+
+import * as firebase from "firebase/app";
+import { AngularFireAuth } from "angularfire2/auth";
+import {
+  AngularFirestore,
+  AngularFirestoreDocument
+} from "angularfire2/firestore";
+
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/operator/switchMap";
 
 export class User {
-  name: string;
+  uid: any
+  displayName: string;
+  photoURL: string;
   email: string;
 
   constructor(name: string, email: string) {
-    this.name = name;
+    this.displayName = name;
     this.email = email;
   }
 }
@@ -21,49 +32,47 @@ export class User {
 */
 @Injectable()
 export class AuthServiceProvider {
-
-  currentUser: User;
-
-  constructor(public http: Http) {
-    console.log('Hello AuthServiceProvider Provider');
-  }
-
-  public login(credentials) {
-    if (credentials.email === null || credentials.password === null) {
-      return Observable.throw("Please insert credentials");
-    } else {
-      return Observable.create(observer => {
-        // At this point make a request to your backend to make a real check!
-        let access = (credentials.password === "pass" && credentials.email === "email");
-        this.currentUser = new User('Simon', 'saimon@devdactic.com');
-        observer.next(access);
-        observer.complete();
-      });
-    }
-  }
-
-  public register(credentials) {
-    if (credentials.email === null || credentials.password === null) {
-      return Observable.throw("Please insert credentials");
-    } else {
-      // At this point store the credentials to your backend!
-      return Observable.create(observer => {
-        observer.next(true);
-        observer.complete();
-      });
-    }
-  }
-
-  public getUserInfo() : User {
-    return this.currentUser;
-  }
-
-  public logout() {
-    return Observable.create(observer => {
-      this.currentUser = null;
-      observer.next(true);
-      observer.complete();
+  user: Observable<User>;
+  constructor(
+    private afAuth: AngularFireAuth,
+    private afs: AngularFirestore,
+    //private router: Router
+  ) {
+    //// Get auth data, then get firestore user document || null
+    this.user = this.afAuth.authState.switchMap(user => {
+      if (user) {
+        return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+      } else {
+        return Observable.of(null);
+      }
     });
   }
-
+  googleLogin() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    return this.oAuthLogin(provider);
+  }
+  private oAuthLogin(provider) {
+    return this.afAuth.auth.signInWithPopup(provider).then(credential => {
+      this.updateUserData(credential.user);
+      return credential.user;
+    });
+  }
+  private updateUserData(user) {
+    // Sets user data to firestore on login
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+      `users/${user.uid}`
+    );
+    const data: User = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL
+    };
+    return userRef.set(data);
+  }
+  signOut() {
+    this.afAuth.auth.signOut().then(() => {
+      //this.router.navigate(["/"]);
+    });
+  }
 }

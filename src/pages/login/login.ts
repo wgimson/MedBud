@@ -1,14 +1,9 @@
 import { Component } from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  AlertController,
-  LoadingController,
-  Loading
-} from "ionic-angular";
+import { IonicPage, NavController, NavParams, AlertController,
+         LoadingController, Loading } from "ionic-angular";
 
 import { HomePage } from '../home/home';
+import { UserFormPage } from '../user-form/user-form';
 
 import { AuthServiceProvider } from "../../providers/auth-service/auth-service";
 
@@ -18,45 +13,51 @@ import { AuthServiceProvider } from "../../providers/auth-service/auth-service";
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
 @Component({
-  selector: "page-login",
-  templateUrl: "login.html"
+  selector: 'page-login',
+  templateUrl: 'login.html',
 })
 export class LoginPage {
   loading: Loading;
-  registerCredentials = { email: "", password: "" };
+  registerCredentials = { email: '', password: '' };
+  userData: any;
 
-  constructor(
-    private nav: NavController,
-    private auth: AuthServiceProvider,
-    private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController
-  ) {}
+  constructor(private nav: NavController, public auth: AuthServiceProvider, private alertCtrl: AlertController, private loadingCtrl: LoadingController) { }
 
   public createAccount() {
-    this.nav.push("RegisterPage");
+    this.nav.push('RegisterPage');
   }
 
+  googleLogin() {
+    this.auth.googleLogin().then(user => {
+      this.userData.email = user.email;
+      this.userData.displayName = user.displayName;
+      this.userData.photoURL = user.photoURL;
+    });
+    debugger;
+    this.nav.push(UserFormPage, this.userData);
+  }
+
+  // TO SPIN UP OUR OWN LOGIN ONE DAY
   public login() {
-    this.showLoading();
-    this.auth.login(this.registerCredentials).subscribe(
-      allowed => {
-        if (allowed) {
-          this.nav.setRoot(HomePage);
-        } else {
-          this.showError("Access Denied");
-        }
-      },
+/*
+    this.showLoading()
+    let creds = this.registerCredentials;
+    this.auth.googleLogin().subscribe(allowed => {
+      if (allowed) {
+        this.nav.setRoot('HomePage');
+      } else {
+        this.showError("Access Denied");
+      }
+    },
       error => {
         this.showError(error);
-      }
-    );
+      }); */
   }
 
   showLoading() {
     this.loading = this.loadingCtrl.create({
-      content: "Please wait...",
+      content: 'Please wait...',
       dismissOnPageChange: true
     });
     this.loading.present();
@@ -66,14 +67,10 @@ export class LoginPage {
     this.loading.dismiss();
 
     let alert = this.alertCtrl.create({
-      title: "Fail",
+      title: 'Fail',
       subTitle: text,
-      buttons: ["OK"]
+      buttons: ['OK']
     });
     alert.present(prompt);
-  }
-
-  ionViewDidLoad() {
-    console.log("ionViewDidLoad LoginPage");
   }
 }

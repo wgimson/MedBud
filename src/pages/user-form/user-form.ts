@@ -57,7 +57,6 @@ export class UserFormPage {
   }
 
   logForm() {
-    debugger;
     let data = this.user.value;
     this.db.collection('patients').add({
       'fName': data.fname,
@@ -77,6 +76,9 @@ export class UserFormPage {
   }
 
   ionViewDidLoad() {
+    debugger;
+    let email = this.navParams.get('email');
+    let data = this.navParams.data;
     console.log("ionViewDidLoad UserFormPage");
   }
 }
