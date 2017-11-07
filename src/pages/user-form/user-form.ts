@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { IonicPage, NavController, NavParams, ToastController } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 
 import { UserDisplayPage } from "../user-display/user-display";
@@ -14,6 +14,10 @@ import {
 // Rxjs Imports
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
+
+import { LoginPage } from '../login/login';
+
+import { AuthServiceProvider } from "../../providers/auth-service/auth-service";
 
 export interface User {
   fName: string;
@@ -38,12 +42,17 @@ export interface User {
 })
 export class UserFormPage {
   public user: FormGroup;
+  public loggedInUser: string;
 
   constructor(
-    public navCtrl: NavController,
+    public nav: NavController,
     public navParams: NavParams,
     private formBuilder: FormBuilder,
-    private db: AngularFirestore
+    private db: AngularFirestore,
+    public auth: AuthServiceProvider,
+    public toastCtrl: ToastController
+
+
   ) {
     this.user = this.formBuilder.group({
       fname: ["", Validators.required],
@@ -72,13 +81,27 @@ export class UserFormPage {
 
   goToDisplayPage() {
     let data = this.user.value;
-    this.navCtrl.push(UserDisplayPage, data);
+    this.nav.push(UserDisplayPage, data);
+  }
+
+  logout() {
+    this.auth.signOut().then((data) => {
+      this.nav.push(LoginPage);
+    })
+  }
+
+  displayUserWelcome() {
+    debugger;
+    this.loggedInUser = this.navParams.get('displayName');
+    let toast = this.toastCtrl.create({
+      message: 'Welcome, ' + this.loggedInUser,
+      duration: 3000
+    });
+    toast.present();
   }
 
   ionViewDidLoad() {
-    debugger;
-    let email = this.navParams.get('email');
-    let data = this.navParams.data;
+    this.displayUserWelcome();
     console.log("ionViewDidLoad UserFormPage");
   }
 }

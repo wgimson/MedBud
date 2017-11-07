@@ -1,9 +1,15 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams, AlertController,
-         LoadingController, Loading } from "ionic-angular";
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  AlertController,
+  LoadingController,
+  Loading
+} from "ionic-angular";
 
-import { HomePage } from '../home/home';
-import { UserFormPage } from '../user-form/user-form';
+import { HomePage } from "../home/home";
+import { UserFormPage } from "../user-form/user-form";
 
 import { AuthServiceProvider } from "../../providers/auth-service/auth-service";
 
@@ -14,33 +20,40 @@ import { AuthServiceProvider } from "../../providers/auth-service/auth-service";
  * Ionic pages and navigation.
  */
 @Component({
-  selector: 'page-login',
-  templateUrl: 'login.html',
+  selector: "page-login",
+  templateUrl: "login.html"
 })
 export class LoginPage {
   loading: Loading;
-  registerCredentials = { email: '', password: '' };
+  registerCredentials = { email: "", password: "" };
   userData: any;
 
-  constructor(private nav: NavController, public auth: AuthServiceProvider, private alertCtrl: AlertController, private loadingCtrl: LoadingController) { }
+  constructor(
+    private nav: NavController,
+    public auth: AuthServiceProvider,
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController
+  ) {}
 
   public createAccount() {
-    this.nav.push('RegisterPage');
+    this.nav.push("RegisterPage");
   }
 
   googleLogin() {
-    this.auth.googleLogin().then(user => {
-      this.userData.email = user.email;
-      this.userData.displayName = user.displayName;
-      this.userData.photoURL = user.photoURL;
+    this.auth.googleLogin().then((data) => {
+      this.nav.push(UserFormPage)
     });
-    debugger;
-    this.nav.push(UserFormPage, this.userData);
+  }
+
+  logout() {
+    this.auth.signOut().then((data) => {
+      this.nav.push(LoginPage);
+    })
   }
 
   // TO SPIN UP OUR OWN LOGIN ONE DAY
   public login() {
-/*
+    /*
     this.showLoading()
     let creds = this.registerCredentials;
     this.auth.googleLogin().subscribe(allowed => {
@@ -57,7 +70,7 @@ export class LoginPage {
 
   showLoading() {
     this.loading = this.loadingCtrl.create({
-      content: 'Please wait...',
+      content: "Please wait...",
       dismissOnPageChange: true
     });
     this.loading.present();
@@ -67,9 +80,9 @@ export class LoginPage {
     this.loading.dismiss();
 
     let alert = this.alertCtrl.create({
-      title: 'Fail',
+      title: "Fail",
       subTitle: text,
-      buttons: ['OK']
+      buttons: ["OK"]
     });
     alert.present(prompt);
   }
