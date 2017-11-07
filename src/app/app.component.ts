@@ -51,7 +51,6 @@ export class MyApp {
 
     this.authService.afAuth.authState.subscribe(
       (user) => {
-        debugger;
         if (user == null) {
           console.log("Logged out");
           this.isLoggedIn = false;

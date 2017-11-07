@@ -10,6 +10,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Form</ion-title>
+  <img class="google-user-icon" [src]="loggedInUserPhoto" />
   </ion-navbar>
 </ion-header>
 
@@ -46,5 +47,5 @@
     </ion-item>
     <button ion-button type="submit" [disabled]="!user.valid">Submit</button>
   </form>
-  <p><button (click)="logout()">Logout</button></p>
+  <button ion-button (click)="logout()">Logout</button>
 </ion-content>

@@ -43,6 +43,7 @@ export interface User {
 export class UserFormPage {
   public user: FormGroup;
   public loggedInUser: string;
+  public loggedInUserPhoto: string;
 
   constructor(
     public nav: NavController,
@@ -91,11 +92,11 @@ export class UserFormPage {
   }
 
   displayUserWelcome() {
-    debugger;
     this.loggedInUser = this.navParams.get('displayName');
+    this.loggedInUserPhoto = this.navParams.get('photoURL');
     let toast = this.toastCtrl.create({
       message: 'Welcome, ' + this.loggedInUser,
-      duration: 3000
+      duration: 5000
     });
     toast.present();
   }
