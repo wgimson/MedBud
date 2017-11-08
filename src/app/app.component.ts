@@ -55,7 +55,6 @@ export class MyApp {
           console.log("Logged out");
           this.isLoggedIn = false;
           this.userParam = { displayName: '', email: '', photoURL: '' };
-          this.nav.push(LoginPage);
         } else {
           this.isLoggedIn = true;
           this.userParam = { displayName: user.displayName, email: user.email, photoURL: user.photoURL };
