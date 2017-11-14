@@ -40,9 +40,7 @@ export class LoginPage {
   }
 
   googleLogin() {
-    this.auth.googleLogin().then((data) => {
-      this.nav.push(UserFormPage)
-    });
+    this.auth.googleLogin();
   }
 
   logout() {
