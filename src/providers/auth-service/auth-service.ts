@@ -4,10 +4,13 @@ import { NavController } from "ionic-angular";
 
 import * as firebase from "firebase/app";
 import { AngularFireAuth } from "angularfire2/auth";
-import { AngularFirestore, AngularFirestoreDocument } from "angularfire2/firestore";
+import {
+  AngularFirestore,
+  AngularFirestoreDocument
+} from "angularfire2/firestore";
 
 export class User {
-  uid: any
+  uid: any;
   displayName: string;
   photoURL: string;
   email: string;
@@ -25,14 +28,21 @@ export class User {
 */
 @Injectable()
 export class AuthServiceProvider {
-  constructor(
-    public afAuth: AngularFireAuth,
-    public afs: AngularFirestore
-  ) {}
+  constructor(public afAuth: AngularFireAuth, public afs: AngularFirestore) {}
 
-  googleLogin() {
+  public googleLogin() {
     const provider = new firebase.auth.GoogleAuthProvider();
     return this.oAuthLogin(provider);
+  }
+
+  public userHasRegistered(userEmail) {
+    return this.afs
+      .collection("users", ref => ref.where("email", "==", userEmail))
+      .valueChanges();
+  }
+
+  public signOut() {
+    return this.afAuth.auth.signOut();
   }
 
   private oAuthLogin(provider) {
@@ -53,8 +63,5 @@ export class AuthServiceProvider {
       photoURL: user.photoURL
     };
     return userRef.set(data);
-  }
-  signOut() {
-    return this.afAuth.auth.signOut();
   }
 }

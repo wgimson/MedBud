@@ -24,12 +24,13 @@ export class UserDisplayPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   writePatientInfo() {
-    this.fname = this.navParams.get("fname");
-    this.lname = this.navParams.get("lname");
+    debugger;
+    this.fname = this.navParams.get("fName");
+    this.lname = this.navParams.get("lName");
     this.age = this.navParams.get("age");
     this.address = this.navParams.get("address");
-    this.econtact = this.navParams.get("econtact");
-    this.mconditions = this.navParams.get("mconditions");
+    this.econtact = this.navParams.get("eContact");
+    this.mconditions = this.navParams.get("mConditions");
     this.prescriptions = this.navParams.get("prescriptions");
   }
 
