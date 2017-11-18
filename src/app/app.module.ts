@@ -11,6 +11,7 @@ import { UserDisplayPage } from '../pages/user-display/user-display';
 import { LoginPage } from '../pages/login/login';
 
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
+import { UserProvider } from '../providers/user/user';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -63,7 +64,8 @@ export const firebaseConfig = {
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthServiceProvider
+    AuthServiceProvider,
+    UserProvider
   ]
 })
 export class AppModule {}
