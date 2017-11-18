@@ -82,14 +82,17 @@ export class MyApp {
         authService
           .userHasRegistered(this.userParam.email)
           .subscribe(userIsRegistered => {
+            let _email = '';
+            if (userIsRegistered[0]['email']) {
+              _email = userIsRegistered[0]['email']
+            }
             let _userRegistered =
-              userIsRegistered.length > 0 ? userIsRegistered[0].email === this.userParam.email ? (this.userRegistered = true) : (this.userRegistered = false) : (this.userRegistered = false);
-                debugger;
+              userIsRegistered.length > 0 ? _email === this.userParam.email ? (this.userRegistered = true) : (this.userRegistered = false) : (this.userRegistered = false);
             if (_userRegistered) {
               this.userService
                 .getPatientByUID(this.userParam.uid)
                 .subscribe(patient => {
-                  let curPatient = patient[0];
+                  let curPatient: any = patient[0];
                   this.patient = {
                     age: curPatient.age,
                     address: curPatient.address,
@@ -102,7 +105,6 @@ export class MyApp {
                   };
                   this.nav.push(UserDisplayPage, this.patient);
                 });
-                debugger;
             } else {
               this.nav.push(UserFormPage, this.userParam);
             }

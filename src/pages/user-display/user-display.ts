@@ -24,7 +24,6 @@ export class UserDisplayPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   writePatientInfo() {
-    debugger;
     this.fname = this.navParams.get("fName");
     this.lname = this.navParams.get("lName");
     this.age = this.navParams.get("age");
