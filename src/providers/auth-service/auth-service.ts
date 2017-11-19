@@ -35,9 +35,17 @@ export class AuthServiceProvider {
     return this.oAuthLogin(provider);
   }
 
-  public userHasRegistered(userEmail) {
+  public getUserByUid(uid) {
+    debugger;
     return this.afs
-      .collection("users", ref => ref.where("email", "==", userEmail))
+      .collection("users", ref => ref.where("uid", "==", uid))
+      .valueChanges();
+  }
+
+  public getPatientByUid(uid) {
+    debugger;
+    return this.afs
+      .collection("patients", ref => ref.where("uid", "==", uid))
       .valueChanges();
   }
 
