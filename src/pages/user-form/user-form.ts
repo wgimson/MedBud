@@ -44,6 +44,7 @@ export class UserFormPage {
   public user: FormGroup;
   public loggedInUser: string;
   public loggedInUserPhoto: string;
+  public patientDisplay: User;
 
   constructor(
     public nav: NavController,
@@ -101,8 +102,27 @@ export class UserFormPage {
     toast.present();
   }
 
+  private isEditDisplay() {
+    debugger;
+    let _navprms = this.navParams;
+    if (_navprms.get('fName')) {
+      this.patientDisplay = {
+        fName: _navprms.get('fName'),
+        lName: _navprms.get('lName'),
+        age: _navprms.get('age'),
+        address: _navprms.get('address'),
+        eContact: _navprms.get('eContact'),
+        mConditions: _navprms.get('mConditions'),
+        prescriptions: _navprms.get('prescriptions')
+      }
+      return true;
+    }
+    return false;
+  }
+
   ionViewDidLoad() {
-    this.displayUserWelcome();
+    //this.displayUserWelcome();
+    let _isEditDisplay = this.isEditDisplay();
     console.log("ionViewDidLoad UserFormPage");
   }
 }

@@ -36,14 +36,12 @@ export class AuthServiceProvider {
   }
 
   public getUserByUid(uid) {
-    debugger;
     return this.afs
       .collection("users", ref => ref.where("uid", "==", uid))
       .valueChanges();
   }
 
   public getPatientByUid(uid) {
-    debugger;
     return this.afs
       .collection("patients", ref => ref.where("uid", "==", uid))
       .valueChanges();

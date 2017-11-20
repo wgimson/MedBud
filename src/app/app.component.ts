@@ -78,7 +78,6 @@ export class MyApp {
           uid: user.uid
         };
         authService.getPatientByUid(this.userParam.uid).subscribe(patient => {
-          debugger;
           let _uid = "";
           if (patient[0]["uid"]) {
             _uid = patient[0]["uid"];

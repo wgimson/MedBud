@@ -9,8 +9,8 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Form</ion-title>
-  <img class="google-user-icon" [src]="loggedInUserPhoto" />
+    <ion-title text-center>Form</ion-title>
+    <img class="google-user-icon" [src]="loggedInUserPhoto" />
   </ion-navbar>
 </ion-header>
 
@@ -19,33 +19,33 @@
   <form [formGroup]="user" (ngSubmit)="logForm()">
     <ion-item>
       <ion-label>First Name</ion-label>
-      <ion-input type="text" formControlName="fname"></ion-input>
+      <ion-input type="text" formControlName="fname" placeholder="{{patientDisplay?.fName}}"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Last Name</ion-label>
-      <ion-input type="text" formControlName="lname"></ion-input>
+      <ion-input type="text" formControlName="lname" placeholder="{{patientDisplay?.lName}}"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Age</ion-label>
-      <ion-input type="text" formControlName="age"></ion-input>
+      <ion-input type="text" formControlName="age" placeholder="{{patientDisplay?.age}}"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Address</ion-label>
-      <ion-input type="text" formControlName="address"></ion-input>
+      <ion-input type="text" formControlName="address" placeholder="{{patientDisplay?.address}}"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Emergency Contact #</ion-label>
-      <ion-input type="text" formControlName="econtact"></ion-input>
+      <ion-input type="text" formControlName="econtact" placeholder="{{patientDisplay?.eContact}}"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Medical Conditions</ion-label>
-      <ion-textarea formControlName="mconditions"></ion-textarea>
+      <ion-textarea formControlName="mconditions" placeholder="{{patientDisplay?.mConditions}}"></ion-textarea>
     </ion-item>
     <ion-item>
       <ion-label>Prescriptions</ion-label>
-      <ion-textarea formControlName="prescriptions"></ion-textarea>
+      <ion-textarea formControlName="prescriptions" placeholder="{{patientDisplay?.prescriptions}}"></ion-textarea>
     </ion-item>
     <button ion-button type="submit" [disabled]="!user.valid">Submit</button>
+    <button ion-button (click)="logout()">Logout</button>
   </form>
-  <button ion-button (click)="logout()">Logout</button>
 </ion-content>
