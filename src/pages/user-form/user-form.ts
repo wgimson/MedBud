@@ -103,7 +103,6 @@ export class UserFormPage {
   }
 
   private isEditDisplay() {
-    debugger;
     let _navprms = this.navParams;
     if (_navprms.get('fName')) {
       this.patientDisplay = {

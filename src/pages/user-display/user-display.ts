@@ -57,7 +57,7 @@ export class UserDisplayPage {
   }
 
   public edit() {
-    debugger;
+    console.log(this.patient);
     this.navCtrl.push(UserFormPage, this.patient);
   }
 
