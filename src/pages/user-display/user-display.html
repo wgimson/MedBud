@@ -6,29 +6,31 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Patient Info</ion-title>
+  <ion-navbar hideBackButton>
+    <ion-title text-center>My Account</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-    <ion-card>
+    <ion-card color="primary">
 
           <ion-card-header>
-            {{fname + ' ' + lname}}
+            {{patient?.fName + ' ' + patient?.lName}}
           </ion-card-header>
 
           <ion-card-content>
             <ul>
-              <li>Age: {{age}}</li>
-              <li>Address: {{address}}</li>
-              <li>Emergency Contact: {{econtact}}</li>
-              <li>Medical Conditions: {{mconditions}}</li>
-              <li>Prescriptions: {{prescriptions}}</li>
+              <li>Age: {{patient?.age}}</li>
+              <li>Address: {{patient?.address}}</li>
+              <li>Emergency Contact: {{patient?.eContact}}</li>
+              <li>Medical Conditions: {{patient?.mConditions}}</li>
+              <li>Prescriptions: {{patient?.prescriptions}}</li>
             </ul>
           </ion-card-content>
 
         </ion-card>
+        <button ion-button (click)="edit()">Edit</button>
+        <button ion-button (click)="logout()">Log Out</button>
 </ion-content>

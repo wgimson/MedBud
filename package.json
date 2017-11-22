@@ -38,5 +38,8 @@
     "@ionic/app-scripts": "^3.0.1",
     "typescript": "2.3.4"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "config": {
+    "ionic_copy": "./scripts/copy-custom-libs.js"
+  }
 }

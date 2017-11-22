@@ -1,24 +1,25 @@
+// ANGULAR IMPORTS
 import { Component, ViewChild } from "@angular/core";
-
+// IONIC IMPORTS
 import { Nav, Platform } from "ionic-angular";
 import { StatusBar } from "@ionic-native/status-bar";
 import { SplashScreen } from "@ionic-native/splash-screen";
-
+// FIREBASE IMPORTS
 import * as firebase from "firebase/app";
-
 import { AngularFireAuth } from "angularfire2/auth";
-
+// RXJS IMPORTS
 import { Observable } from "rxjs/Observable";
-
+// PAGES
 import { HomePage } from "../pages/home/home";
 import { ListPage } from "../pages/list/list";
 import { UserFormPage } from "../pages/user-form/user-form";
 import { UserDisplayPage } from "../pages/user-display/user-display";
 import { LoginPage } from "../pages/login/login";
-
+// SERVICES
 import { AuthServiceProvider } from "../providers/auth-service/auth-service";
 import { UserProvider } from "../providers/user/user";
 
+// INTERFACES
 export interface UserParam {
   displayName: string;
   email: string;
@@ -37,6 +38,7 @@ export interface Patient {
   uid: string;
 }
 
+// COMPONENT
 @Component({
   templateUrl: "app.html"
 })
@@ -44,12 +46,9 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any = LoginPage;
   pages: Array<{ title: string; component: any }>;
-  user: Observable<firebase.User>;
   public isLoggedIn: Boolean;
   public userParam: UserParam;
   public patient: Patient;
-  public userRegisteredObs: Observable<any>;
-  public userRegistered: boolean;
 
   constructor(
     public platform: Platform,
@@ -69,8 +68,7 @@ export class MyApp {
 
     this.authService.afAuth.authState.subscribe(user => {
       if (user == null) {
-        this.isLoggedIn = false;
-        this.userParam = { displayName: "", email: "", photoURL: "", uid: "" };
+        this.clearUserObject();
       } else {
         this.isLoggedIn = true;
         this.userParam = {
@@ -79,40 +77,24 @@ export class MyApp {
           photoURL: user.photoURL,
           uid: user.uid
         };
-        authService
-          .userHasRegistered(this.userParam.email)
-          .subscribe(userIsRegistered => {
-            let _email = '';
-            if (userIsRegistered[0]['email']) {
-              _email = userIsRegistered[0]['email']
-            }
-            let _userRegistered =
-              userIsRegistered.length > 0 ? _email === this.userParam.email ? (this.userRegistered = true) : (this.userRegistered = false) : (this.userRegistered = false);
-            if (_userRegistered) {
-              this.userService
-                .getPatientByUID(this.userParam.uid)
-                .subscribe(patient => {
-                  let curPatient: any = patient[0];
-                  this.patient = {
-                    age: curPatient.age,
-                    address: curPatient.address,
-                    eContact: curPatient.eContact,
-                    fName: curPatient.fName,
-                    lName: curPatient.lName,
-                    mConditions: curPatient.mConditions,
-                    prescriptions: curPatient.prescriptions,
-                    uid: curPatient.uid
-                  };
-                  this.nav.push(UserDisplayPage, this.patient);
-                });
-            } else {
-              this.nav.push(UserFormPage, this.userParam);
-            }
-          });
+        authService.getPatientByUid(this.userParam.uid).subscribe(patient => {
+          let _uid = "";
+          if (patient[0]["uid"]) {
+            _uid = patient[0]["uid"];
+          }
+          let _correctlyRegistered = this.patientIsCorrectlyRegistered(_uid);
+          if (_correctlyRegistered) {
+            let _patientParam = this.buildPatientParamObject(patient[0]);
+            this.nav.push(UserDisplayPage, _patientParam);
+          } else {
+            this.nav.push(UserFormPage, this.userParam);
+          }
+        });
       }
     });
   }
 
+  // PUBLIC FUNCTIONS
   initializeApp() {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -126,5 +108,28 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  // PRIVATE FUNCTIONS
+  private buildPatientParamObject(patient) {
+    return (this.patient = {
+      age: patient.age,
+      address: patient.address,
+      eContact: patient.eContact,
+      fName: patient.fName,
+      lName: patient.lName,
+      mConditions: patient.mConditions,
+      prescriptions: patient.prescriptions,
+      uid: patient.uid
+    });
+  }
+
+  private patientIsCorrectlyRegistered(uid) {
+    return this.userParam.uid === uid ? true : false;
+  }
+
+  private clearUserObject() {
+    this.isLoggedIn = false;
+    this.userParam = { displayName: "", email: "", photoURL: "", uid: "" };
   }
 }
